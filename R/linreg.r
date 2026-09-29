@@ -29,11 +29,12 @@ linreg <- function(formula, data){
         Q <- Q %*% H
     }
 
+    R <- R[1:m,]
+    Q <- Q[,1:m]
+
     # ---------------------
     #  /QR - factorization 
     # ---------------------
-    R <- R[1:m,]
-    Q <- Q[,1:m]
 
     beta_hat <- solve(R) %*% t(Q) %*% y
     predicted <- X %*% beta_hat
@@ -44,15 +45,17 @@ linreg <- function(formula, data){
     t_value <- beta_hat / sqrt(diag(var_beta_hat))
 
     # Create a variable with class linreg 
-    result <- list( coefs=beta_hat,
+    result <- list( coeffs=beta_hat,
                     predicted= predicted,
                     residual=residual,
                     dof=dof,
                     var_hat=var_hat,
                     var_beta_hat=var_beta_hat,
-                    t_value=t_value)
+                    t_value=t_value,
+                    call=match.call(),
+                    formula=formula)
 
-    class(result) <- "linreg"
+    class(result) <- "linreg_class"
 
     return(result)
 }
@@ -62,6 +65,46 @@ linreg <- function(formula, data){
 #     structure(x, class="linreg",beta_hat=beta_hat, predicted=predicted, residual=residual, dof=dof, var_hat=var_hat, var_beta_hat=var_beta_hat, t_value=t_value)
 # }
 
-# resid.linreg <- function(x){
-#     return(x[residual])
-# }
+print.linreg_class <- function(x){
+    cat("Call:\n")
+    print(x$call)
+    cat("\nCoefficients:\n")
+    print_list <- unlist(x["coeffs"])
+    names(print_list) <- all.vars(formula)
+    names(print_list)[1] <- "(Intercept)"
+
+    print(print_list)
+}
+
+resid.linreg_class <- function(x){
+    return(x["residual"])
+}
+
+pred.linreg_class <- function(x){
+    return(x["predicted"])
+}
+
+coef.linreg_class <- function(x){  
+    coef_vector <- unlist(x["coeffs"])
+    names(coef_vector) <- all.vars(formula)
+    names(coef_vector)[1] <- "(Intercept)"
+
+    return(coef_vector)
+}
+
+summary.linreg_class <- function(x){
+    p_values <- 2 * (1-pt(abs(r$t_value), r$dof))
+    df <- data.frame(cbind(r$coeffs, sqrt(diag(r$var_beta_hat)), r$t_value, p_values))
+    names(df) <- c("Estimate", "Std. Error", "t value", "p value")
+
+    print(df)
+    cat("\nEstimated sigma**2\n")
+    print(r$var_hat)
+    cat("\nDegrees of Freedom\n")
+    print(r$dof)
+}
+
+formula <- Sepal.Length ~ Sepal.Width + Petal.Length
+r <- linreg(formula, iris)
+
+l <- lm(formula, iris)
