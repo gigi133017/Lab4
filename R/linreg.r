@@ -107,4 +107,50 @@ summary.linreg_class <- function(x){
 formula <- Sepal.Length ~ Sepal.Width + Petal.Length
 r <- linreg(formula, iris)
 
-l <- lm(formula, iris)
+library(ggplot2)
+
+plot.linreg_class <- function(x) {
+  
+  df <- data.frame(
+    fitted = x$predicted,
+    residuals = x$residual
+  )
+  
+  g1 <- ggplot(df, aes(x = fitted, y = residuals)) +
+    geom_point() +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    labs(
+      title = "Residuals vs Predicted",
+      x = "Predicted",
+      y = "Residual"
+    ) +
+    theme_minimal()
+  
+  df <- data.frame(
+    fitted = x$predicted,
+    stresiduals = sqrt(abs(x$residual/sqrt(var(x$residual)[1])))
+  )
+  
+  g2 <- ggplot(df, aes(x = fitted, y = stresiduals)) +
+    geom_point() +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+    labs(
+      title = "Standardised residuals vs Predicted",
+      x = "Predicted",
+      y = "Standardised residual"
+    ) +
+    theme_minimal()
+  g1 
+}
+
+
+
+
+
+
+
+
+
+
+
+
