@@ -73,6 +73,7 @@ summary.linreg_class <- function(x){
 }
 
 library(ggplot2)
+library(patchwork)
 
 #' Plot of linreg object
 #'
@@ -88,9 +89,10 @@ plot.linreg_class <- function(x) {
     residuals = x$residual
   )
   
+  mean_df <- aggregate(residuals ~ fitted, data = df, FUN = mean)
   g1 <- ggplot(df, aes(x = fitted, y = residuals)) +
     geom_point() +
-    geom_hline(yintercept = 0, linetype = "dashed", color = "#00b9e7") +
+    geom_line(data = mean_df,aes(x = fitted, y = residuals), color = "#00b9e7",linewidth = 1) +
     labs(
       title = "Residuals vs Predicted",
       x = "Predicted",
@@ -103,16 +105,17 @@ plot.linreg_class <- function(x) {
     stresiduals = sqrt(abs(x$residual/sqrt(var(x$residual)[1])))
   )
   
+  mean_df1 <- aggregate(stresiduals ~ fitted, data = df, FUN = mean)
   g2 <- ggplot(df, aes(x = fitted, y = stresiduals)) +
     geom_point() +
-    geom_hline(yintercept = 0, linetype = "dashed", color = "00b9e7") +
+    geom_line(data = mean_df1,aes(x = fitted, y = stresiduals), color = "#00b9e7",linewidth = 1) +
     labs(
       title = "Standardised residuals vs Predicted",
       x = "Predicted",
       y = "Standardised residual"
     ) +
     theme_minimal()
-  g1 
+  g1 + g2
 }
 
 
