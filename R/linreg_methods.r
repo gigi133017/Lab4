@@ -4,13 +4,12 @@
 #'
 #' @param x linreg object
 #' @export
-print.linreg_class <- function(x){
+print.linreg <- function(x){
     cat("Call:\n")
     print(x$call)
     cat("\nCoefficients:\n")
     print_list <- unlist(x["coeffs"])
-    names(print_list) <- all.vars(formula)
-    names(print_list)[1] <- "(Intercept)"
+    names(print_list) <- rownames(x[["coeffs"]])
 
     print(print_list)
 }
@@ -22,7 +21,7 @@ print.linreg_class <- function(x){
 #' @param x linreg object
 #' @return float list
 #' @export
-resid.linreg_class <- function(x){
+resid.linreg <- function(x){
     return(x["residual"])
 }
 
@@ -33,7 +32,7 @@ resid.linreg_class <- function(x){
 #' @param x linreg object
 #' @return float list
 #' @export
-pred.linreg_class <- function(x){
+pred.linreg <- function(x){
     return(x["predicted"])
 }
 
@@ -44,7 +43,7 @@ pred.linreg_class <- function(x){
 #' @param x linreg object
 #' @return float list
 #' @export
-coef.linreg_class <- function(x){  
+coef.linreg <- function(x){  
     coef_vector <- unlist(x["coeffs"])
     names(coef_vector) <- all.vars(formula)
     names(coef_vector)[1] <- "(Intercept)"
@@ -60,16 +59,16 @@ coef.linreg_class <- function(x){
 #'
 #' @param x linreg object
 #' @export
-summary.linreg_class <- function(x){
+summary.linreg <- function(x){
     p_values <- 2 * (1-pt(abs(x$t_value), x$dof))
     df <- data.frame(cbind(x$coeffs, sqrt(diag(x$var_beta_hat)), x$t_value, p_values))
     names(df) <- c("Estimate", "Std. Error", "t value", "p value")
 
     print(df)
     cat("\nEstimated sigma**2\n")
-    print(r$var_hat)
+    print(x$var_hat)
     cat("\nDegrees of Freedom\n")
-    print(r$dof)
+    print(x$dof)
 }
 
 library(ggplot2)
@@ -82,7 +81,7 @@ library(patchwork)
 #' @param x linreg object
 #' @return float list
 #' @export
-plot.linreg_class <- function(x) {
+plot.linreg <- function(x) {
   
   df <- data.frame(
     fitted = x$predicted,

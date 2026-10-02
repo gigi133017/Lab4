@@ -66,7 +66,7 @@ linreg <- function(formula, data){
                     call=match.call(),
                     formula=formula)
 
-    class(result) <- "linreg_class"
+    class(result) <- "linreg"
 
     return(result)
 }
