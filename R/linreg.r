@@ -1,3 +1,14 @@
+#' Linear Regression using QR factorization
+#'
+#' This funcction calculates the parameters for a linear regression for a given
+#'set of data and formula. QR factorization is used to get the final result.
+#'The output is an object of class "linreg"
+#'
+#' @param formula formula
+#' @param data data.frame
+#' @return linreg class object
+#' @export
+
 linreg <- function(formula, data){
     #stopifnot
 
@@ -59,98 +70,3 @@ linreg <- function(formula, data){
 
     return(result)
 }
-
-# # linreg S3 class constructor
-# new_linreg <- function(x, beta_hat, predicted, residual, dof, var_hat, var_beta_hat, t_value){
-#     structure(x, class="linreg",beta_hat=beta_hat, predicted=predicted, residual=residual, dof=dof, var_hat=var_hat, var_beta_hat=var_beta_hat, t_value=t_value)
-# }
-
-print.linreg_class <- function(x){
-    cat("Call:\n")
-    print(x$call)
-    cat("\nCoefficients:\n")
-    print_list <- unlist(x["coeffs"])
-    names(print_list) <- all.vars(formula)
-    names(print_list)[1] <- "(Intercept)"
-
-    print(print_list)
-}
-
-resid.linreg_class <- function(x){
-    return(x["residual"])
-}
-
-pred.linreg_class <- function(x){
-    return(x["predicted"])
-}
-
-coef.linreg_class <- function(x){  
-    coef_vector <- unlist(x["coeffs"])
-    names(coef_vector) <- all.vars(formula)
-    names(coef_vector)[1] <- "(Intercept)"
-
-    return(coef_vector)
-}
-
-summary.linreg_class <- function(x){
-    p_values <- 2 * (1-pt(abs(r$t_value), r$dof))
-    df <- data.frame(cbind(r$coeffs, sqrt(diag(r$var_beta_hat)), r$t_value, p_values))
-    names(df) <- c("Estimate", "Std. Error", "t value", "p value")
-
-    print(df)
-    cat("\nEstimated sigma**2\n")
-    print(r$var_hat)
-    cat("\nDegrees of Freedom\n")
-    print(r$dof)
-}
-
-formula <- Sepal.Length ~ Sepal.Width + Petal.Length
-r <- linreg(formula, iris)
-
-library(ggplot2)
-
-plot.linreg_class <- function(x) {
-  
-  df <- data.frame(
-    fitted = x$predicted,
-    residuals = x$residual
-  )
-  
-  g1 <- ggplot(df, aes(x = fitted, y = residuals)) +
-    geom_point() +
-    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-    labs(
-      title = "Residuals vs Predicted",
-      x = "Predicted",
-      y = "Residual"
-    ) +
-    theme_minimal()
-  
-  df <- data.frame(
-    fitted = x$predicted,
-    stresiduals = sqrt(abs(x$residual/sqrt(var(x$residual)[1])))
-  )
-  
-  g2 <- ggplot(df, aes(x = fitted, y = stresiduals)) +
-    geom_point() +
-    geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-    labs(
-      title = "Standardised residuals vs Predicted",
-      x = "Predicted",
-      y = "Standardised residual"
-    ) +
-    theme_minimal()
-  g1 
-}
-
-
-
-
-
-
-
-
-
-
-
-
