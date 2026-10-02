@@ -21,8 +21,8 @@ print.linreg <- function(x){
 #' @param x linreg object
 #' @return float list
 #' @export
-resid.linreg <- function(x){
-    return(x["residual"])
+residuals.linreg <- function(x){
+    return(x[["residual"]])
 }
 
 #' Predictions of linreg object
@@ -33,7 +33,11 @@ resid.linreg <- function(x){
 #' @return float list
 #' @export
 pred.linreg <- function(x){
-    return(x["predicted"])
+    return(x[["predicted"]])
+}
+
+pred <- function(x) {
+    UseMethod("pred")
 }
 
 #' Coefficients of linreg object
@@ -45,8 +49,7 @@ pred.linreg <- function(x){
 #' @export
 coef.linreg <- function(x){  
     coef_vector <- unlist(x["coeffs"])
-    names(coef_vector) <- all.vars(formula)
-    names(coef_vector)[1] <- "(Intercept)"
+    names(coef_vector) <- rownames(x[["coeffs"]])
 
     return(coef_vector)
 }
@@ -72,7 +75,7 @@ summary.linreg <- function(x){
 }
 
 library(ggplot2)
-library(patchwork)
+#library(patchwork)
 
 #' Plot of linreg object
 #'
