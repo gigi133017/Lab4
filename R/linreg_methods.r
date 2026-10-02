@@ -79,10 +79,12 @@ library(ggplot2)
 
 #' Plot of linreg object
 #'
-#' Returns two plot figures
+#' Saves two plot figures
+#' One is the Residuals for each predicted value
+#' The second is the standardized resiuduals for each prediction.
 #'
 #' @param x linreg object
-#' @return float list
+#' @return two saved figures
 #' @export
 plot.linreg <- function(x) {
   
@@ -101,7 +103,7 @@ plot.linreg <- function(x) {
       y = "Residual"
     ) +
     theme_minimal()
-  
+
   df <- data.frame(
     fitted = x$predicted,
     stresiduals = sqrt(abs(x$residual/sqrt(var(x$residual)[1])))
@@ -117,7 +119,11 @@ plot.linreg <- function(x) {
       y = "Standardised residual"
     ) +
     theme_minimal()
-  g1 + g2
+  #g1 + g2
+
+  # We save the plots
+  ggsave("ResVsPredicted.png", plot = g1, width = 6, height = 4)
+  ggsave("Std_resVsPredicted.png", plot = g2, width = 6, height = 4)
 }
 
 
