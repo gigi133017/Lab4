@@ -4,10 +4,12 @@
 \alias{summary.linreg}
 \title{Summary of linreg object}
 \usage{
-\method{summary}{linreg}(x)
+\method{summary}{linreg}(object, ...)
 }
 \arguments{
-\item{x}{linreg object}
+\item{object}{linreg object}
+
+\item{...}{other options}
 }
 \description{
 Prints on screen a summary of the different parameters of the linreg object.

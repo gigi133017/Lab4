@@ -4,10 +4,12 @@
 \alias{residuals.linreg}
 \title{Residuals of linreg object}
 \usage{
-\method{residuals}{linreg}(x)
+\method{residuals}{linreg}(object, ...)
 }
 \arguments{
-\item{x}{linreg object}
+\item{object}{linreg object}
+
+\item{...}{other options}
 }
 \value{
 float list

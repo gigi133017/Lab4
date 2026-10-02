@@ -4,10 +4,12 @@
 \alias{print.linreg}
 \title{Print linreg class object}
 \usage{
-\method{print}{linreg}(x)
+\method{print}{linreg}(x, ...)
 }
 \arguments{
 \item{x}{linreg object}
+
+\item{...}{other options}
 }
 \description{
 Print the coefficients and the call function of the linear regression

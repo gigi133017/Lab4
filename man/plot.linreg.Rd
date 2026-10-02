@@ -4,10 +4,12 @@
 \alias{plot.linreg}
 \title{Plot of linreg object}
 \usage{
-\method{plot}{linreg}(x)
+\method{plot}{linreg}(x, ...)
 }
 \arguments{
 \item{x}{linreg object}
+
+\item{...}{other options}
 }
 \value{
 two saved figures

@@ -10,7 +10,7 @@
 #' @export
 
 linreg <- function(formula, data){
-    #stopifnot
+    stopifnot(is.data.frame(data), class(formula)=="formula")
 
     X <- model.matrix(formula, data)
     y <- data[[all.vars(formula)[1]]]

@@ -4,10 +4,12 @@
 \alias{coef.linreg}
 \title{Coefficients of linreg object}
 \usage{
-\method{coef}{linreg}(x)
+\method{coef}{linreg}(object, ...)
 }
 \arguments{
-\item{x}{linreg object}
+\item{object}{linreg object}
+
+\item{...}{other options}
 }
 \value{
 float list
