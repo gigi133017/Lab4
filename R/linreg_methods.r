@@ -75,7 +75,7 @@ summary.linreg <- function(x){
 }
 
 library(ggplot2)
-#library(patchwork)
+library(patchwork)
 
 #' Plot of linreg object
 #'
